@@ -65,7 +65,7 @@ class State:
         else:
             insertion_pos: int = bisect.bisect(
                 a=self.occupied_durations,
-                x=duration_to_check,
+                x=duration_to_check[0],
                 key=lambda x: x[0],  # sorted by the starting time
             )
 
@@ -109,6 +109,7 @@ class State:
 
         # Append the valid contract to the state
         new_state.contracts.append(contract)
+        bisect.insort(new_state.occupied_durations, contract.duration_range, key=lambda x: x[0]) # Adding the time occupied by this new contract as well
 
         # Updating the upper_bound and cost values of the new state
         new_state.upper = upper
@@ -232,7 +233,7 @@ contracts = [
 
 manager = Manager(contracts=contracts)
 optimal = manager.run()
-print([c.penalty for c in  optimal.contracts])
+print([c.contract_name for c in  optimal.contracts])
 
 
 
