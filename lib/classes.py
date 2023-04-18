@@ -127,23 +127,6 @@ class Manager:
         contracts_list.sort(key=lambda x: x.contract_number) # Sorting the list by ascending contract numbers
         self.contracts_list: typing.List[Contract] = contracts_list # Storing the list of contracts in this current manager instance
 
-        # # Creating a list to store all states
-        # self.unprocessed_states: collections.deque[State] = collections.deque()
-        # self.processed_states: typing.List[State] = list()
-        
-        # # Creating an initial state
-        # initial_state: State = State() # Empty state
-
-        # # Creating & updating the global upper bound
-        # self.global_upper: int = initial_state.upper # Should be ~ inf
-
-        # # Adding the initial state into the states list
-        # self.unprocessed_states.append(
-        #     copy.deepcopy(
-        #         initial_state
-        #     )
-        # )
-
         return None
 
     def run(self) -> State:
@@ -225,10 +208,10 @@ class Manager:
 
 # Testing function
 contracts = [
-    Contract(0, "foo0", 0, 5, 10),
+    Contract(0, "foo0", 0, 7, 10),
     Contract(1, "foo1", 3, 7, 14),
     Contract(2, "foo2", 5, 9, 8),
-    Contract(3, "foo3", 5, 9, 7),
+    Contract(3, "foo3", 6, 9, 70),
 ]
 
 manager = Manager(contracts=contracts)
