@@ -3,6 +3,7 @@ import typing
 import bisect
 import copy
 import collections
+import pydantic
 
 DurationRange: typing.TypeAlias = typing.Tuple[
     int, int
@@ -24,12 +25,6 @@ def is_overlaps(range_one: DurationRange, range_two: DurationRange) -> bool:
 
 
 class Contract:
-
-
-    # def __init__(self, contract_number: int, duration_range: DurationRange, penalty: int) -> None:
-    #     self.contract_number: int = contract_number
-    #     self.duration_range: DurationRange = duration_range
-    #     self.penalty: int = penalty
 
     def __init__(self, contract_number: int, contract_name: str, start_hour: int, duration: int, price: int) -> None:
 
@@ -205,6 +200,53 @@ class Manager:
             
         return optimal_state
 
+class PayloadContract(pydantic.BaseModel):
+    """
+    This class is used to represent the fields that are expected to be present within the request payload.
+    """
+    
+    # Defining expected fields
+    name: str
+    start: int
+    duration: int
+    price: int
+    
+    # Adding field specific validation checks
+    @pydantic.validator("name")
+    def value_must_not_be_empty(cls, val: str):
+        if len(val) == 0:
+            raise ValueError("'name' field on the payload request is empty.")
+        return val
+    
+    @pydantic.validator("start", "price")
+    def value_must_be_greater_than_or_equals_zero(cls, val: int):
+        if val < 0:
+            raise ValueError("'start' field on the payload request is negative.")
+        return val
+    
+    @pydantic.validator("duration")
+    def value_must_be_greater_than_zero(cls, val: int):
+        if val <= 0:
+            raise ValueError("'duration' field on the payload request must be >= 0.")
+        return val
+            
+        
+    
+class PayloadBody(pydantic.BaseModel):
+    """
+    This class is used to model the expected request payload body.
+    """
+    
+    # Defining expected fields
+    contracts_list: typing.List[PayloadContract]
+    
+    
+class SuccessfulResponse(pydantic.BaseModel):
+    income: int
+    path: typing.List[str]    
+
+class FailureResponse(pydantic.BaseModel):
+    reason: str
 
 # Testing function
 contracts = [
