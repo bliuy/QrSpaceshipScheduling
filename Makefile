@@ -2,11 +2,11 @@
 VENV = venv
 PYTHON = $(VENV)/bin/python3 # Path to python3 runner in the virtualenv
 PIP = $(VENV)/bin/pip # Path to pip utility in the virtualenv
+ACTIVATE = $(VENV)/bin/activate
 
 run: installing-dependencies
 	@echo "Starting Makefile build."
-	@pwd
-	$(PYTHON) -m src/main
+	$(PYTHON) -m uvicorn --port 8080 src.main:app
 
 installing-dependencies: creating-virtualenv
 	$(PIP) install fastapi
