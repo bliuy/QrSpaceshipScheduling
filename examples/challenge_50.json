@@ -1,0 +1,304 @@
+{
+  "contracts_list": [
+    {
+      "name": "contract0",
+      "start": 60,
+      "duration": 4,
+      "price": 70
+    },
+    {
+      "name": "contract1",
+      "start": 35,
+      "duration": 36,
+      "price": 67
+    },
+    {
+      "name": "contract2",
+      "start": 65,
+      "duration": 7,
+      "price": 68
+    },
+    {
+      "name": "contract3",
+      "start": 32,
+      "duration": 47,
+      "price": 39
+    },
+    {
+      "name": "contract4",
+      "start": 78,
+      "duration": 23,
+      "price": 74
+    },
+    {
+      "name": "contract5",
+      "start": 5,
+      "duration": 67,
+      "price": 78
+    },
+    {
+      "name": "contract6",
+      "start": 86,
+      "duration": 82,
+      "price": 46
+    },
+    {
+      "name": "contract7",
+      "start": 97,
+      "duration": 11,
+      "price": 1
+    },
+    {
+      "name": "contract8",
+      "start": 40,
+      "duration": 70,
+      "price": 42
+    },
+    {
+      "name": "contract9",
+      "start": 41,
+      "duration": 79,
+      "price": 12
+    },
+    {
+      "name": "contract10",
+      "start": 76,
+      "duration": 97,
+      "price": 31
+    },
+    {
+      "name": "contract11",
+      "start": 48,
+      "duration": 54,
+      "price": 89
+    },
+    {
+      "name": "contract12",
+      "start": 36,
+      "duration": 89,
+      "price": 52
+    },
+    {
+      "name": "contract13",
+      "start": 24,
+      "duration": 27,
+      "price": 64
+    },
+    {
+      "name": "contract14",
+      "start": 40,
+      "duration": 89,
+      "price": 39
+    },
+    {
+      "name": "contract15",
+      "start": 86,
+      "duration": 19,
+      "price": 24
+    },
+    {
+      "name": "contract16",
+      "start": 85,
+      "duration": 28,
+      "price": 93
+    },
+    {
+      "name": "contract17",
+      "start": 91,
+      "duration": 46,
+      "price": 67
+    },
+    {
+      "name": "contract18",
+      "start": 24,
+      "duration": 52,
+      "price": 71
+    },
+    {
+      "name": "contract19",
+      "start": 19,
+      "duration": 72,
+      "price": 84
+    },
+    {
+      "name": "contract20",
+      "start": 27,
+      "duration": 27,
+      "price": 78
+    },
+    {
+      "name": "contract21",
+      "start": 2,
+      "duration": 13,
+      "price": 56
+    },
+    {
+      "name": "contract22",
+      "start": 89,
+      "duration": 38,
+      "price": 23
+    },
+    {
+      "name": "contract23",
+      "start": 54,
+      "duration": 25,
+      "price": 77
+    },
+    {
+      "name": "contract24",
+      "start": 56,
+      "duration": 41,
+      "price": 70
+    },
+    {
+      "name": "contract25",
+      "start": 6,
+      "duration": 8,
+      "price": 8
+    },
+    {
+      "name": "contract26",
+      "start": 80,
+      "duration": 23,
+      "price": 5
+    },
+    {
+      "name": "contract27",
+      "start": 46,
+      "duration": 60,
+      "price": 77
+    },
+    {
+      "name": "contract28",
+      "start": 2,
+      "duration": 28,
+      "price": 30
+    },
+    {
+      "name": "contract29",
+      "start": 37,
+      "duration": 83,
+      "price": 73
+    },
+    {
+      "name": "contract30",
+      "start": 16,
+      "duration": 66,
+      "price": 5
+    },
+    {
+      "name": "contract31",
+      "start": 90,
+      "duration": 93,
+      "price": 31
+    },
+    {
+      "name": "contract32",
+      "start": 68,
+      "duration": 55,
+      "price": 88
+    },
+    {
+      "name": "contract33",
+      "start": 33,
+      "duration": 8,
+      "price": 22
+    },
+    {
+      "name": "contract34",
+      "start": 19,
+      "duration": 89,
+      "price": 37
+    },
+    {
+      "name": "contract35",
+      "start": 80,
+      "duration": 89,
+      "price": 70
+    },
+    {
+      "name": "contract36",
+      "start": 18,
+      "duration": 62,
+      "price": 71
+    },
+    {
+      "name": "contract37",
+      "start": 29,
+      "duration": 6,
+      "price": 84
+    },
+    {
+      "name": "contract38",
+      "start": 85,
+      "duration": 1,
+      "price": 31
+    },
+    {
+      "name": "contract39",
+      "start": 65,
+      "duration": 7,
+      "price": 79
+    },
+    {
+      "name": "contract40",
+      "start": 40,
+      "duration": 49,
+      "price": 57
+    },
+    {
+      "name": "contract41",
+      "start": 39,
+      "duration": 99,
+      "price": 96
+    },
+    {
+      "name": "contract42",
+      "start": 63,
+      "duration": 36,
+      "price": 2
+    },
+    {
+      "name": "contract43",
+      "start": 73,
+      "duration": 62,
+      "price": 59
+    },
+    {
+      "name": "contract44",
+      "start": 75,
+      "duration": 81,
+      "price": 70
+    },
+    {
+      "name": "contract45",
+      "start": 27,
+      "duration": 48,
+      "price": 44
+    },
+    {
+      "name": "contract46",
+      "start": 4,
+      "duration": 88,
+      "price": 85
+    },
+    {
+      "name": "contract47",
+      "start": 22,
+      "duration": 41,
+      "price": 91
+    },
+    {
+      "name": "contract48",
+      "start": 24,
+      "duration": 96,
+      "price": 39
+    },
+    {
+      "name": "contract49",
+      "start": 90,
+      "duration": 37,
+      "price": 15
+    }
+  ]
+}
