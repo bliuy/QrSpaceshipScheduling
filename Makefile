@@ -9,6 +9,7 @@ run: installing-dependencies
 	$(PYTHON) -m uvicorn --port 8080 src.main:app
 
 installing-dependencies: creating-virtualenv
+	$(PIP) install httpx
 	$(PIP) install fastapi
 	$(PIP) install "uvicorn[standard]"
 	$(PIP) install pydantic
