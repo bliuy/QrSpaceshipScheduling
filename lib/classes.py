@@ -25,10 +25,14 @@ def is_overlaps(range_one: DurationRange, range_two: DurationRange) -> bool:
 
 
 class Contract:
-
-    def __init__(self, contract_number: int, contract_name: str, start_hour: int, duration: int, price: int) -> None:
-
-
+    def __init__(
+        self,
+        contract_number: int,
+        contract_name: str,
+        start_hour: int,
+        duration: int,
+        price: int,
+    ) -> None:
         self.contract_number: int = contract_number
         self.contract_name: str = contract_name
 
@@ -36,10 +40,11 @@ class Contract:
         duration_range: DurationRange = (start_hour, start_hour + duration)
         self.duration_range: DurationRange = duration_range
 
-        self.penalty: int = price # Price == Penalty since we miss out on this reward if this contract is not done.
+        self.penalty: int = price  # Price == Penalty since we miss out on this reward if this contract is not done.
 
         return None
-    
+
+
 class State:
     def __init__(self) -> None:
         self.contracts: typing.List[
@@ -48,7 +53,9 @@ class State:
         self.occupied_durations: typing.List[
             DurationRange
         ] = []  # Storing the various durations of the rentals
-        self.upper: int = int((2**128) - 1)  # Equivalent to upper limit of unsigned 128 bit integer. Assuming that system does not deal with values bigger than this.
+        self.upper: int = int(
+            (2**128) - 1
+        )  # Equivalent to upper limit of unsigned 128 bit integer. Assuming that system does not deal with values bigger than this.
         self.cost: int = 0  # No costs at the initial stage
         return None
 
@@ -83,7 +90,6 @@ class State:
             return True
 
     def get_max_contract_number(self) -> typing.Optional[int]:
-
         if len(self.contracts) == 0:
             return None
         else:
@@ -92,19 +98,21 @@ class State:
     def get_all_contract_numbers(self) -> typing.Set[int]:
         return set(i.contract_number for i in self.contracts)
 
-
-    def add_contract(self, contract: Contract, upper: int, cost: int) -> typing.Optional[State]:
-        
+    def add_contract(
+        self, contract: Contract, upper: int, cost: int
+    ) -> typing.Optional[State]:
         # Check if there is any overlaps in terms of durations
         if not self.no_overlapping_duration(contract.duration_range):
             return None
-        
+
         # Making a copy of the current state
         new_state: State = copy.deepcopy(self)
 
         # Append the valid contract to the state
         new_state.contracts.append(contract)
-        bisect.insort(new_state.occupied_durations, contract.duration_range, key=lambda x: x[0]) # Adding the time occupied by this new contract as well
+        bisect.insort(
+            new_state.occupied_durations, contract.duration_range, key=lambda x: x[0]
+        )  # Adding the time occupied by this new contract as well
 
         # Updating the upper_bound and cost values of the new state
         new_state.upper = upper
@@ -113,140 +121,178 @@ class State:
         # Returning the new state
         return new_state
 
-class Manager:
-    
-    def __init__(self, contracts: typing.Iterable[Contract]) -> None:
 
+class Manager:
+    def __init__(self, contracts: typing.Iterable[Contract]) -> None:
         # Capturing the list of contracts
-        contracts_list: typing.List[Contract] = list(contracts) # Converting the iterable into a list
-        contracts_list.sort(key=lambda x: x.contract_number) # Sorting the list by ascending contract numbers
-        self.contracts_list: typing.List[Contract] = contracts_list # Storing the list of contracts in this current manager instance
+        contracts_list: typing.List[Contract] = list(
+            contracts
+        )  # Converting the iterable into a list
+        contracts_list.sort(
+            key=lambda x: x.contract_number
+        )  # Sorting the list by ascending contract numbers
+        self.contracts_list: typing.List[
+            Contract
+        ] = contracts_list  # Storing the list of contracts in this current manager instance
 
         return None
 
     def run(self) -> State:
-
         # Setup
         unprocessed_states: collections.deque[State] = collections.deque()
         # processed_states: typing.List[State] = list()
-        contract_indexes: typing.List[int] = list(i for i in range(len(self.contracts_list)))
+        contract_indexes: typing.List[int] = list(
+            i for i in range(len(self.contracts_list))
+        )
 
         # Creating an initial state
-        initial_state: State = State() # Empty state
+        initial_state: State = State()  # Empty state
 
         ## Using the initial state value as the global upper bound
         global_upper: int = initial_state.upper
 
         ## Adding the initial state to the queue of unprocessed states
-        unprocessed_states.append(
-            initial_state
-        )
+        unprocessed_states.append(initial_state)
 
         ## Setting the initial state as the optimal state
         optimal_state: State = initial_state
 
         # Building the branch and bound tree
         while len(unprocessed_states) > 0:
-
-            current_state: State = unprocessed_states.popleft() # FIFO
+            current_state: State = unprocessed_states.popleft()  # FIFO
 
             # Checking if current state is optimal
             if current_state.cost > global_upper:
-                continue # Indicates that the lower bound is already not optimal
+                continue  # Indicates that the lower bound is already not optimal
             else:
-                if current_state.upper < global_upper: # Indicates that this state is better than the previous ones
+                if (
+                    current_state.upper < global_upper
+                ):  # Indicates that this state is better than the previous ones
                     global_upper = current_state.upper
                     optimal_state = current_state
-            
+
             # Spawning sub nodes
             # Determining the possible contracts that we are allowed to create based on this state
             current_contract_number = current_state.get_max_contract_number()
             if current_contract_number is None:
                 possible_idx = contract_indexes
             else:
-                possible_idx = [i for i in contract_indexes if i > current_contract_number]
-            
+                possible_idx = [
+                    i for i in contract_indexes if i > current_contract_number
+                ]
+
             ## Checking if any possible nodes left to spawn
             if len(possible_idx) == 0:
                 continue
             else:
                 for idx in possible_idx:
-
                     # Getting the contract
                     selected_contract = self.contracts_list[idx]
 
                     # Calculating the upper bound
-                    ub_idx = set(contract_indexes) # Set of all possible indexes
-                    ub_idx.remove(idx) # Removing the current index
-                    ub_idx = ub_idx - current_state.get_all_contract_numbers() # Excluding all visited indexes
-                    current_upper: int = sum(c.penalty for c in map(self.contracts_list.__getitem__, ub_idx))
+                    ub_idx = set(contract_indexes)  # Set of all possible indexes
+                    ub_idx.remove(idx)  # Removing the current index
+                    ub_idx = (
+                        ub_idx - current_state.get_all_contract_numbers()
+                    )  # Excluding all visited indexes
+                    current_upper: int = sum(
+                        c.penalty for c in map(self.contracts_list.__getitem__, ub_idx)
+                    )
 
                     # Calculating the cost value
                     c_idx = set(contract_indexes)
                     c_idx.remove(idx)
                     c_idx = c_idx - current_state.get_all_contract_numbers()
                     c_idx = set(i for i in c_idx if i < idx)
-                    current_cost: int = sum(c.penalty for c in map(self.contracts_list.__getitem__, c_idx))
+                    current_cost: int = sum(
+                        c.penalty for c in map(self.contracts_list.__getitem__, c_idx)
+                    )
 
                     # Attempting to create a new state based on the current parameters
                     new_state = current_state.add_contract(
                         contract=selected_contract,
                         upper=current_upper,
-                        cost=current_cost
+                        cost=current_cost,
                     )
 
                     if new_state is not None:
                         unprocessed_states.append(new_state)
-            
+
         return optimal_state
+
 
 class PayloadContract(pydantic.BaseModel):
     """
     This class is used to represent the fields that are expected to be present within the request payload.
     """
-    
+
     # Defining expected fields
     name: str
     start: int
     duration: int
     price: int
-    
+
     # Adding field specific validation checks
     @pydantic.validator("name")
     def value_must_not_be_empty(cls, val: str):
         if len(val) == 0:
             raise ValueError("'name' field on the payload request is empty.")
         return val
-    
+
     @pydantic.validator("start", "price")
     def value_must_be_greater_than_or_equals_zero(cls, val: int):
         if val < 0:
             raise ValueError("'start' field on the payload request is negative.")
         return val
-    
+
     @pydantic.validator("duration")
     def value_must_be_greater_than_zero(cls, val: int):
         if val <= 0:
             raise ValueError("'duration' field on the payload request must be >= 0.")
         return val
-            
-        
-    
+
+    @pydantic.validator("start", "duration", "price")
+    def value_must_be_less_than_128_bits(cls, val: int):
+        threshold: int = (2**128) - 1
+        if val >= threshold:
+            raise ValueError("This API has a int limit size of 128 bits.")
+        return val
+
+
 class PayloadBody(pydantic.BaseModel):
     """
     This class is used to model the expected request payload body.
     """
-    
+
     # Defining expected fields
     contracts_list: typing.List[PayloadContract]
-    
-    
+
+    # Validation checks
+    @pydantic.validator("contracts_list")
+    def no_overlapping_contract_names(cls, val: typing.List[PayloadContract]):
+        unique_contract_names: typing.Set[str] = set(i.name for i in val)
+        if len(unique_contract_names) < len(val):
+            raise ValueError(
+                f"Contracts should have unique names to avoid any confusion."
+            )
+        return val
+
+    @pydantic.validator("contracts_list")
+    def zero_prices(cls, val: typing.List[PayloadContract]):
+        prices_set: typing.Set[int] = set(i.price for i in val)
+        if prices_set - set([0]) == set():
+            raise ValueError(f"At least one contract should have a price of > 0.")
+        return val
+
+
 class SuccessfulResponse(pydantic.BaseModel):
     income: int
-    path: typing.List[str]    
+    path: typing.List[str]
+
 
 class FailureResponse(pydantic.BaseModel):
     reason: str
+
 
 # Testing function
 contracts = [
@@ -258,24 +304,4 @@ contracts = [
 
 manager = Manager(contracts=contracts)
 optimal = manager.run()
-print([c.contract_name for c in  optimal.contracts])
-
-
-
-
-
-
-
-
-        
-
-
-
-
-
-
-
-
-
-    
-
+print([c.contract_name for c in optimal.contracts])
