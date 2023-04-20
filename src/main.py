@@ -50,10 +50,13 @@ async def process_payload(request_payload: PayloadBody):
     optimal_state = manager.run()
 
     # Getting the parameters from the optimal state
+    optimal_contracts: typing.List[Contract] = [i for i in optimal_state.contracts]
+    optimal_contracts.sort(key=lambda x: x.duration_range[0])
+
     income: int = sum(
-        i.penalty for i in optimal_state.contracts
+        i.penalty for i in optimal_contracts
     )  # Note: The penalty is equivalent to the price - Essentially if the job is not taken, the price becomes the penalty.
-    path: typing.List[str] = [i.contract_name for i in optimal_state.contracts]
+    path: typing.List[str] = [i.contract_name for i in optimal_contracts]
 
     # Constructing the response
     response: SuccessfulResponse = SuccessfulResponse(income=income, path=path)
