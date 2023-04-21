@@ -2,14 +2,6 @@ from fastapi import FastAPI
 import logging
 import typing
 from lib.classes import PayloadBody, Contract, SuccessfulResponse, Manager
-from pdb import set_trace as pdbst
-
-# Setting up the global logging parameters
-logging.basicConfig(
-    format=r"%(asctime)s UTC - %(message)s",
-    level=logging.DEBUG,
-    datefmt=r"%d-%m-%Y %H:%M:%S",
-)
 
 # Creating a new webserver instance
 app = FastAPI()
@@ -22,7 +14,6 @@ async def testing():
 
 @app.post("/spaceship/optimize", response_model=SuccessfulResponse)
 async def process_payload(request_payload: PayloadBody):
-    logging.info(f"Payload recieved.")
 
     # Creating a list of contracts
     contracts_list: typing.List[Contract] = list()
