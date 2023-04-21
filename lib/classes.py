@@ -4,6 +4,15 @@ import bisect
 import copy
 import collections
 import pydantic
+import logging
+import time
+
+# Setting up the global logging parameters
+logging.basicConfig(
+    format=r"%(asctime)s UTC - %(message)s",
+    level=logging.DEBUG,
+    datefmt=r"%d-%m-%Y %H:%M:%S",
+)
 
 DurationRange: typing.TypeAlias = typing.Tuple[
     int, int
@@ -138,12 +147,16 @@ class Manager:
         return None
 
     def run(self) -> State:
+
+        process_start_timestamp: int = time.perf_counter_ns()
+
         # Setup
         unprocessed_states: collections.deque[State] = collections.deque()
         # processed_states: typing.List[State] = list()
         contract_indexes: typing.List[int] = list(
             i for i in range(len(self.contracts_list))
         )
+        total_states_visited: int = 0
 
         # Creating an initial state
         initial_state: State = State()  # Empty state
@@ -160,6 +173,7 @@ class Manager:
         # Building the branch and bound tree
         while len(unprocessed_states) > 0:
             current_state: State = unprocessed_states.popleft()  # FIFO
+            total_states_visited += 1
 
             # Checking if current state is optimal
             if current_state.cost > global_upper:
@@ -217,6 +231,15 @@ class Manager:
 
                     if new_state is not None:
                         unprocessed_states.append(new_state)
+
+        # Logging the total time taken
+        process_end_timestamp: int = time.perf_counter_ns()
+        metrics_information: str = f"""
+        Total number of contracts processed: {max(contract_indexes) + 1}
+        Total number of states visited: {total_states_visited}
+        Total time taken: {(process_end_timestamp - process_start_timestamp)/(10**6)} ms
+        """
+        logging.info(metrics_information)
 
         return optimal_state
 
