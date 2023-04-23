@@ -53,4 +53,14 @@ The Windows setup installs packages into the default Python environment. A virtu
 * Once the webserver is running, access the following page via your browser: localhost:8080/docs
     * This will open up the docs that provide information regarding the payload structure and the expected responses.
     * The docs also provide the functionality to send test payloads to the respective endpoints.
-    
+* The server timeout parameter is set to 600 seconds.
+    * This means that if the response result cannot be calculated within the timeout limit then a timeout response is returned.
+
+# Sample Benchmarks
+## Test Bench \& Assumptions
+* Benchmarks run on the following machine: r5.large EC2 instance.
+* Only 1 run used for each benchmark.
+* No network delays are considered.
+## Benchmarking results
+* Input: 50 contracts - 1705.887246 ms
+* Input: 100 contracts - 101843.528398 ms
