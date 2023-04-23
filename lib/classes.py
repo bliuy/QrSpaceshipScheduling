@@ -316,15 +316,3 @@ class SuccessfulResponse(pydantic.BaseModel):
 class FailureResponse(pydantic.BaseModel):
     reason: str
 
-
-# Testing function
-contracts = [
-    Contract(0, "foo0", 0, 7, 10),
-    Contract(1, "foo1", 3, 7, 14),
-    Contract(2, "foo2", 5, 9, 8),
-    Contract(3, "foo3", 6, 9, 70),
-]
-
-manager = Manager(contracts=contracts)
-optimal = manager.run()
-print([c.contract_name for c in optimal.contracts])
