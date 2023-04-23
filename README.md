@@ -59,6 +59,7 @@ The Windows setup installs packages into the default Python environment. A virtu
 # Sample Benchmarks
 ## Test Bench \& Assumptions
 * Benchmarks run on the following machine: r5.large EC2 instance.
+* Benchmarks were run using the sample inputs found in the examples folder.
 * Only 1 run used for each benchmark.
 * No network delays are considered.
 ## Benchmarking results
